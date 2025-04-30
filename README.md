@@ -1,70 +1,94 @@
-# Getting Started with Create React App
+# Slice Admin - Панель администратора интернет-магазина
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Slice Admin - это веб-интерфейс для управления интернет-магазином Slice, разработанный с использованием React и Material-UI.
 
-## Available Scripts
+## Функциональность
 
-In the project directory, you can run:
+- Аутентификация и авторизация пользователей
+- Управление товарами
+- Управление категориями
+- Управление брендами
+- Управление изображениями товаров
 
-### `npm start`
+## Технологии
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- React 18
+- React Router 6
+- Material-UI 5
+- Axios для API-запросов
+- Контекст React для управления состоянием авторизации
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Начало работы
 
-### `npm test`
+### Предварительные требования
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- Node.js 16+ и npm
+- Запущенный бэкенд API Slice на `http://localhost:8000`
 
-### `npm run build`
+### Установка
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+1. Склонируйте репозиторий:
+   ```
+   git clone https://github.com/your-username/slice-admin.git
+   cd slice-admin
+   ```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+2. Установите зависимости:
+   ```
+   npm install
+   ```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+3. Запустите приложение в режиме разработки:
+   ```
+   npm start
+   ```
 
-### `npm run eject`
+4. Откройте [http://localhost:3000](http://localhost:3000) в вашем браузере.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## Структура проекта
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+```
+slice-admin/
+├── public/               # Статические файлы
+├── src/                  # Исходный код
+│   ├── api/              # API сервисы для работы с бэкендом
+│   ├── components/       # Переиспользуемые компоненты
+│   ├── contexts/         # React-контексты
+│   ├── pages/            # Страницы приложения
+│   ├── App.js            # Корневой компонент с маршрутами
+│   ├── index.js          # Точка входа приложения
+│   └── theme.js          # Настройки темы MUI
+└── package.json          # Зависимости и скрипты
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## Аутентификация
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+Для входа в админ-панель используйте одну из следующих учетных записей:
 
-## Learn More
+- **Администратор**:
+    - Логин: `admin`
+    - Пароль: `admin`
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+- **Менеджер**:
+    - Логин: `manager`
+    - Пароль: `Manager123!`
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## Маршруты API
 
-### Code Splitting
+Приложение взаимодействует с API бэкенда по следующим маршрутам:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+- `/api/v1/auth/login` - Аутентификация
+- `/api/v1/products` - Управление товарами
+- `/api/v1/categories` - Управление категориями
+- `/api/v1/brands` - Управление брендами
+- `/api/v1/product-images` - Управление изображениями товаров
 
-### Analyzing the Bundle Size
+## Сборка для продакшена
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+Для создания оптимизированной сборки для продакшена выполните:
 
-### Making a Progressive Web App
+```
+npm run build
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Собранные файлы будут находиться в каталоге `build/`.
