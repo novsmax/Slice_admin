@@ -1,5 +1,6 @@
 // src/api/productImageService.js
 import { api } from './authService';
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:8000';
 
 const getProductImages = async (productId) => {
     try {
@@ -18,6 +19,19 @@ const getProductImage = async (imageId) => {
         throw error;
     }
 };
+
+
+const getProductImagesCount = async () => {
+    try {
+      const response = await api.get('/product-images/count');
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching images count:', error);
+      return 0;
+    }
+  };
+
+
 
 const createProductImage = async (imageData) => {
     try {
@@ -108,7 +122,8 @@ const uploadProductImage = async (file, productId, metadata = {}) => {
     updateProductImage,
     deleteProductImage,
     setPrimaryImage,
-    uploadProductImage // Добавляем новую функцию
+    uploadProductImage, // Добавляем новую функцию
+    getProductImagesCount
   };
 
 

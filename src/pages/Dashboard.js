@@ -21,6 +21,7 @@ import {
     Storefront as StorefrontIcon,
     Image as ImageIcon
 } from '@mui/icons-material';
+import productImageService from '../api/productImageService';
 import { useAuth } from '../contexts/AuthContext';
 import productService from '../api/productService';
 import categoryService from '../api/categoryService';
@@ -65,38 +66,43 @@ const Dashboard = () => {
         totalProducts: 0,
         totalCategories: 0,
         totalBrands: 0,
+        totalImages: 0,
         recentProducts: []
     });
 
     // Загрузка статистики
     const fetchStats = async () => {
         try {
-            setLoading(true);
-            setError(null);
-
-            const productsData = await productService.getProducts(1, 5);
-            const totalProducts = productsData.total;
-            const recentProducts = productsData.items;
-
-            const categoriesData = await categoryService.getCategories(1, 1);
-            const totalCategories = categoriesData.total;
-
-            const brandsData = await brandService.getBrands(1, 1);
-            const totalBrands = brandsData.total;
-
-            setStats({
-                totalProducts,
-                totalCategories,
-                totalBrands,
-                recentProducts
-            });
+          setLoading(true);
+          setError(null);
+      
+          const productsData = await productService.getProducts(1, 5);
+          const totalProducts = productsData.total;
+          const recentProducts = productsData.items;
+      
+          const categoriesData = await categoryService.getCategories(1, 1);
+          const totalCategories = categoriesData.total;
+      
+          const brandsData = await brandService.getBrands(1, 1);
+          const totalBrands = brandsData.total;
+      
+          // Получение количества изображений
+          const totalImages = await productImageService.getProductImagesCount();
+      
+          setStats({
+            totalProducts,
+            totalCategories,
+            totalBrands,
+            totalImages, // Добавьте это поле
+            recentProducts
+          });
         } catch (err) {
-            console.error('Error fetching dashboard stats:', err);
-            setError('Не удалось загрузить статистику');
+          console.error('Error fetching dashboard stats:', err);
+          setError('Не удалось загрузить статистику');
         } finally {
-            setLoading(false);
+          setLoading(false);
         }
-    };
+      };
 
     useEffect(() => {
         fetchStats();
@@ -149,7 +155,7 @@ const Dashboard = () => {
                 <Grid item xs={12} sm={6} md={3}>
                     <StatCard
                         title="Изображения"
-                        value="-"
+                        value={stats.totalImages}
                         icon={<ImageIcon />}
                         color="#9c27b0"
                         loading={loading}

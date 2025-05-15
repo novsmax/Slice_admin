@@ -34,39 +34,19 @@ import { useAuth } from '../../contexts/AuthContext';
 
 const drawerWidth = 240;
 
-const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
-    ({ theme, open }) => ({
+const Main = styled('main')(
+    ({ theme }) => ({
         flexGrow: 1,
         padding: theme.spacing(3),
-        transition: theme.transitions.create('margin', {
-            easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.leavingScreen,
-        }),
         marginLeft: 0,
-        ...(open && {
-            transition: theme.transitions.create('margin', {
-                easing: theme.transitions.easing.easeOut,
-                duration: theme.transitions.duration.enteringScreen,
-            }),
-            marginLeft: drawerWidth,
-        }),
     }),
 );
 
-const AppBarStyled = styled(AppBar, { shouldForwardProp: (prop) => prop !== 'open' })(
-    ({ theme, open }) => ({
-        transition: theme.transitions.create(['margin', 'width'], {
-            easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.leavingScreen,
-        }),
-        ...(open && {
-            width: `calc(100% - ${drawerWidth}px)`,
-            marginLeft: `${drawerWidth}px`,
-            transition: theme.transitions.create(['margin', 'width'], {
-                easing: theme.transitions.easing.easeOut,
-                duration: theme.transitions.duration.enteringScreen,
-            }),
-        }),
+const AppBarStyled = styled(AppBar)(
+    ({ theme }) => ({
+        width: `calc(100% - ${drawerWidth}px)`,
+        marginLeft: drawerWidth,
+        zIndex: theme.zIndex.drawer + 1,
     }),
 );
 
@@ -78,19 +58,22 @@ const DrawerHeader = styled('div')(({ theme }) => ({
     justifyContent: 'flex-end',
 }));
 
+// Находим и заменяем код компонента DashboardLayout:
+
 const DashboardLayout = () => {
-    const [open, setOpen] = useState(true);
+    // Удаляем состояние open и функции handleDrawerOpen/Close
+    // const [open, setOpen] = useState(true);
     const [anchorEl, setAnchorEl] = useState(null);
     const { currentUser, logout } = useAuth();
     const navigate = useNavigate();
 
-    const handleDrawerOpen = () => {
-        setOpen(true);
-    };
-
-    const handleDrawerClose = () => {
-        setOpen(false);
-    };
+    // Удаляем эти функции
+    // const handleDrawerOpen = () => {
+    //     setOpen(true);
+    // };
+    // const handleDrawerClose = () => {
+    //     setOpen(false);
+    // };
 
     const handleProfileMenuOpen = (event) => {
         setAnchorEl(event.currentTarget);
@@ -116,9 +99,10 @@ const DashboardLayout = () => {
     return (
         <Box sx={{ display: 'flex' }}>
             <CssBaseline />
-            <AppBarStyled position="fixed" open={open}>
+            <AppBarStyled position="fixed">
                 <Toolbar>
-                    <IconButton
+                    {/* Удаляем кнопку для открытия меню */}
+                    {/* <IconButton
                         color="inherit"
                         aria-label="open drawer"
                         onClick={handleDrawerOpen}
@@ -126,7 +110,7 @@ const DashboardLayout = () => {
                         sx={{ mr: 2, ...(open && { display: 'none' }) }}
                     >
                         <MenuIcon />
-                    </IconButton>
+                    </IconButton> */}
                     <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }}>
                         Slice Admin
                     </Typography>
@@ -178,6 +162,7 @@ const DashboardLayout = () => {
                     </Box>
                 </Toolbar>
             </AppBarStyled>
+            {/* Изменяем Drawer на постоянный */}
             <Drawer
                 sx={{
                     width: drawerWidth,
@@ -187,17 +172,18 @@ const DashboardLayout = () => {
                         boxSizing: 'border-box',
                     },
                 }}
-                variant="persistent"
+                variant="permanent" // Меняем с "persistent" на "permanent"
                 anchor="left"
-                open={open}
+                open={true} // Всегда открыто
             >
                 <DrawerHeader>
                     <Typography variant="h6" sx={{ flexGrow: 1, ml: 2 }}>
                         Меню
                     </Typography>
-                    <IconButton onClick={handleDrawerClose}>
+                    {/* Удаляем кнопку закрытия */}
+                    {/* <IconButton onClick={handleDrawerClose}>
                         <ChevronLeftIcon />
-                    </IconButton>
+                    </IconButton> */}
                 </DrawerHeader>
                 <Divider />
                 <List>
@@ -223,7 +209,8 @@ const DashboardLayout = () => {
                     </Button>
                 </Box>
             </Drawer>
-            <Main open={open}>
+            {/* Изменяем основной контент */}
+            <Main>
                 <DrawerHeader />
                 <Outlet />
             </Main>

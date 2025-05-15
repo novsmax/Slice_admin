@@ -382,7 +382,7 @@ const ProductImagesPage = () => {
                         image={
                             image.image_url.startsWith('http') 
                             ? image.image_url 
-                            : `${window.location.origin}${image.image_url}`
+                            : `http://localhost:8000${image.image_url}`
                         }
                         alt={image.alt_text || selectedProduct.name}
                         sx={{ objectFit: 'contain', bgcolor: '#f5f5f5' }}
@@ -496,20 +496,22 @@ const ProductImagesPage = () => {
                   </Typography>
                   <Box
                     component="img"
-                    src={formValues.image_url}
+                    src={formValues.image_url.startsWith('http') 
+                        ? formValues.image_url 
+                        : `http://localhost:8000${formValues.image_url}`}
                     alt={formValues.alt_text || 'Предпросмотр'}
                     sx={{
-                      display: 'block',
-                      maxWidth: '100%',
-                      maxHeight: 200,
-                      margin: '0 auto',
-                      objectFit: 'contain'
+                        display: 'block',
+                        maxWidth: '100%',
+                        maxHeight: 200,
+                        margin: '0 auto',
+                        objectFit: 'contain'
                     }}
                     onError={(e) => {
-                      e.target.onerror = null;
-                      e.target.src = 'https://via.placeholder.com/400x300?text=Ошибка+загрузки';
+                        e.target.onerror = null;
+                        e.target.src = 'https://via.placeholder.com/400x300?text=Ошибка+загрузки';
                     }}
-                  />
+                />
                 </Box>
               </Grid>
             )}
