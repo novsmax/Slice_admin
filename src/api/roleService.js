@@ -1,14 +1,5 @@
 import { api } from './authService';
 
-const getRoles = async (page = 1, perPage = 100) => {
-    try {
-        const response = await api.get(`/roles?page=${page}&per_page=${perPage}`);
-        return response.data;
-    } catch (error) {
-        throw error;
-    }
-};
-
 const getRole = async (id) => {
     try {
         const response = await api.get(`/roles/${id}`);
@@ -45,12 +36,23 @@ const deleteRole = async (id) => {
     }
 };
 
+// Убедимся, что метод получения всех ролей работает правильно
+const getAllRoles = async () => {
+  try {
+    const response = await api.get('/roles?per_page=100'); // Получаем большое количество ролей (все)
+    return response.data.items; // Обратите внимание, что роли находятся в свойстве items объекта ответа
+  } catch (error) {
+    console.error('Error fetching roles:', error);
+    return []; // Возвращаем пустой массив в случае ошибки
+  }
+};
+
 const roleService = {
-    getRoles,
-    getRole,
-    createRole,
-    updateRole,
-    deleteRole
+  getRole,
+  createRole,
+  updateRole,
+  deleteRole,
+  getAllRoles // Не забудьте экспортировать этот метод
 };
 
 export default roleService;

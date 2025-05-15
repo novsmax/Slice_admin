@@ -1,7 +1,5 @@
 // src/pages/Products.js
 import React, { useState, useEffect } from 'react';
-
-
 import {
     Box,
     Button,
@@ -29,7 +27,9 @@ import {
     Grid,
     Chip,
     Alert,
-    CircularProgress
+    CircularProgress,
+    FormControlLabel,
+    Checkbox
 } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
@@ -54,6 +54,7 @@ const ProductsPage = () => {
     const [searchQuery, setSearchQuery] = useState('');
     const [selectedCategory, setSelectedCategory] = useState('');
     const [selectedBrand, setSelectedBrand] = useState('');
+    const [showOnlyActive, setShowOnlyActive] = useState(false); // Добавляем состояние для фильтра активных товаров
 
     // Списки категорий и брендов для фильтров
     const [categories, setCategories] = useState([]);
@@ -83,12 +84,15 @@ const ProductsPage = () => {
             setLoading(true);
             setError(null);
 
+            // В админке получаем все товары (включая неактивные)
+            // Только если включен фильтр showOnlyActive, запрашиваем только активные товары
             const data = await productService.getProducts(
                 page + 1,
                 rowsPerPage,
                 searchQuery,
                 selectedCategory || null,
-                selectedBrand || null
+                selectedBrand || null,
+                !showOnlyActive // Передаем includeInactive = !showOnlyActive
             );
 
             setProducts(data.items);
@@ -125,7 +129,7 @@ const ProductsPage = () => {
     // При изменении страницы, размера страницы или фильтров загружаем товары
     useEffect(() => {
         fetchProducts();
-    }, [page, rowsPerPage, searchQuery, selectedCategory, selectedBrand]);
+    }, [page, rowsPerPage, searchQuery, selectedCategory, selectedBrand, showOnlyActive]); // Добавляем showOnlyActive в зависимости
 
     // Обработчики изменения пагинации
     const handleChangePage = (event, newPage) => {
@@ -150,6 +154,12 @@ const ProductsPage = () => {
 
     const handleBrandChange = (event) => {
         setSelectedBrand(event.target.value);
+        setPage(0);
+    };
+
+    // Обработчик изменения фильтра активных товаров
+    const handleActiveFilterChange = (event) => {
+        setShowOnlyActive(event.target.checked);
         setPage(0);
     };
 
@@ -360,10 +370,23 @@ const ProductsPage = () => {
                                 setSearchQuery('');
                                 setSelectedCategory('');
                                 setSelectedBrand('');
+                                setShowOnlyActive(false); // Сбрасываем фильтр активных товаров
                             }}
                         >
                             Сбросить
                         </Button>
+                    </Grid>
+                    <Grid item xs={12}>
+                        <FormControlLabel
+                            control={
+                                <Checkbox
+                                    checked={showOnlyActive}
+                                    onChange={handleActiveFilterChange}
+                                    name="showOnlyActive"
+                                />
+                            }
+                            label="Показать только активные товары"
+                        />
                     </Grid>
                 </Grid>
             </Paper>
@@ -551,17 +574,16 @@ const ProductsPage = () => {
                             />
                         </Grid>
                         <Grid item xs={12}>
-                            <FormControl>
-                                <label>
-                                    <input
-                                        type="checkbox"
+                            <FormControlLabel
+                                control={
+                                    <Checkbox
                                         name="is_active"
                                         checked={formValues.is_active}
                                         onChange={handleFormChange}
                                     />
-                                    &nbsp;Товар активен (доступен для продажи)
-                                </label>
-                            </FormControl>
+                                }
+                                label="Товар активен (доступен для продажи)"
+                            />
                         </Grid>
                     </Grid>
                 </DialogContent>
@@ -677,17 +699,16 @@ const ProductsPage = () => {
                             />
                         </Grid>
                         <Grid item xs={12}>
-                            <FormControl>
-                                <label>
-                                    <input
-                                        type="checkbox"
+                            <FormControlLabel
+                                control={
+                                    <Checkbox
                                         name="is_active"
                                         checked={formValues.is_active}
                                         onChange={handleFormChange}
                                     />
-                                    &nbsp;Товар активен (доступен для продажи)
-                                </label>
-                            </FormControl>
+                                }
+                                label="Товар активен (доступен для продажи)"
+                            />
                         </Grid>
                     </Grid>
                 </DialogContent>

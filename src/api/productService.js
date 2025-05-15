@@ -1,6 +1,6 @@
 import { api } from './authService';
 
-const getProducts = async (page = 1, perPage = 10, search = '', categoryId = null, brandId = null) => {
+const getProducts = async (page = 1, perPage = 10, search = '', categoryId = null, brandId = null, includeInactive = true) => {
     try {
         let url = `/products?page=${page}&per_page=${perPage}`;
 
@@ -8,8 +8,11 @@ const getProducts = async (page = 1, perPage = 10, search = '', categoryId = nul
         if (categoryId) url += `&category_id=${categoryId}`;
         if (brandId) url += `&brand_id=${brandId}`;
         
-        // Добавляем сортировку по ID в порядке возрастания
-        url += `&sort_field=id&sort_order=asc`;
+        // Добавляем фильтрацию по активности только если необходимо
+        // Для админ-панели мы передаём includeInactive = true
+        if (!includeInactive) {
+            url += `&is_active=true`;
+        }
 
         const response = await api.get(url);
         return response.data;
