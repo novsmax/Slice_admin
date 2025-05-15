@@ -17,6 +17,8 @@ import Categories from './pages/Categories';
 import Brands from './pages/Brands';
 import ProductImages from './pages/ProductImages';
 import NotFound from './pages/NotFound';
+import AccessDenied from './pages/AccessDenied';
+
 
 // Тема
 import theme from './theme';
@@ -30,6 +32,8 @@ const App = () => {
             <Routes>
               {/* Публичные маршруты */}
               <Route path="/login" element={<Login />} />
+              <Route path="/access-denied" element={<AccessDenied />} />
+
 
               {/* Маршруты, требующие аутентификации */}
               <Route

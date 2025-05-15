@@ -7,7 +7,6 @@ import {
     Typography,
     Card,
     CardContent,
-    CardHeader,
     List,
     ListItem,
     ListItemText,
@@ -75,16 +74,13 @@ const Dashboard = () => {
             setLoading(true);
             setError(null);
 
-            // Загружаем продукты
             const productsData = await productService.getProducts(1, 5);
             const totalProducts = productsData.total;
             const recentProducts = productsData.items;
 
-            // Загружаем категории
             const categoriesData = await categoryService.getCategories(1, 1);
             const totalCategories = categoriesData.total;
 
-            // Загружаем бренды
             const brandsData = await brandService.getBrands(1, 1);
             const totalBrands = brandsData.total;
 

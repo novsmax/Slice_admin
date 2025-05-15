@@ -52,7 +52,6 @@ const Login = () => {
     const { login, currentUser, loading, error } = useAuth();
     const navigate = useNavigate();
 
-    // Если пользователь уже авторизован, перенаправляем на дашборд
     if (currentUser) {
         return <Navigate to="/dashboard" />;
     }
@@ -76,7 +75,6 @@ const Login = () => {
             navigate('/dashboard');
         } catch (err) {
             console.error('Login error:', err);
-            // Ошибка уже будет установлена в контексте Auth
         }
     };
 
