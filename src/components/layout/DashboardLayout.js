@@ -28,6 +28,7 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import CategoryIcon from '@mui/icons-material/Category';
 import BrandingWatermarkIcon from '@mui/icons-material/BrandingWatermark';
 import ImageIcon from '@mui/icons-material/Image';
+import PeopleIcon from '@mui/icons-material/People';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { styled } from '@mui/material/styles';
 import { useAuth } from '../../contexts/AuthContext';
@@ -58,22 +59,12 @@ const DrawerHeader = styled('div')(({ theme }) => ({
     justifyContent: 'flex-end',
 }));
 
-// Находим и заменяем код компонента DashboardLayout:
 
 const DashboardLayout = () => {
-    // Удаляем состояние open и функции handleDrawerOpen/Close
-    // const [open, setOpen] = useState(true);
-    const [anchorEl, setAnchorEl] = useState(null);
-    const { currentUser, logout } = useAuth();
-    const navigate = useNavigate();
 
-    // Удаляем эти функции
-    // const handleDrawerOpen = () => {
-    //     setOpen(true);
-    // };
-    // const handleDrawerClose = () => {
-    //     setOpen(false);
-    // };
+    const [anchorEl, setAnchorEl] = useState(null);
+    const { currentUser, logout, isAdmin } = useAuth();
+    const navigate = useNavigate();
 
     const handleProfileMenuOpen = (event) => {
         setAnchorEl(event.currentTarget);
@@ -96,21 +87,15 @@ const DashboardLayout = () => {
         { text: 'Изображения', icon: <ImageIcon />, path: '/dashboard/images' },
     ];
 
+    if (isAdmin()) {
+        menuItems.push({ text: 'Пользователи', icon: <PeopleIcon />, path: '/dashboard/users' });
+    }
+
     return (
         <Box sx={{ display: 'flex' }}>
             <CssBaseline />
             <AppBarStyled position="fixed">
                 <Toolbar>
-                    {/* Удаляем кнопку для открытия меню */}
-                    {/* <IconButton
-                        color="inherit"
-                        aria-label="open drawer"
-                        onClick={handleDrawerOpen}
-                        edge="start"
-                        sx={{ mr: 2, ...(open && { display: 'none' }) }}
-                    >
-                        <MenuIcon />
-                    </IconButton> */}
                     <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }}>
                         Slice Admin
                     </Typography>
@@ -180,10 +165,6 @@ const DashboardLayout = () => {
                     <Typography variant="h6" sx={{ flexGrow: 1, ml: 2 }}>
                         Меню
                     </Typography>
-                    {/* Удаляем кнопку закрытия */}
-                    {/* <IconButton onClick={handleDrawerClose}>
-                        <ChevronLeftIcon />
-                    </IconButton> */}
                 </DrawerHeader>
                 <Divider />
                 <List>

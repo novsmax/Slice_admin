@@ -1,4 +1,3 @@
-// src/api/productService.js
 import { api } from './authService';
 
 const getProducts = async (page = 1, perPage = 10, search = '', categoryId = null, brandId = null) => {
@@ -8,6 +7,9 @@ const getProducts = async (page = 1, perPage = 10, search = '', categoryId = nul
         if (search) url += `&query=${encodeURIComponent(search)}`;
         if (categoryId) url += `&category_id=${categoryId}`;
         if (brandId) url += `&brand_id=${brandId}`;
+        
+        // Добавляем сортировку по ID в порядке возрастания
+        url += `&sort_field=id&sort_order=asc`;
 
         const response = await api.get(url);
         return response.data;
@@ -61,8 +63,3 @@ const productService = {
 };
 
 export default productService;
-
-
-
-
-

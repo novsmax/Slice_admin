@@ -1,11 +1,10 @@
-// src/components/ProtectedRoute.js
 import React from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { CircularProgress, Box } from '@mui/material';
 
 const ProtectedRoute = ({ children, requireAdmin = false }) => {
-  const { currentUser, loading, isAdmin, isManager } = useAuth();
+  const { currentUser, loading, isAdmin, isManager, hasAdminAccess } = useAuth();
   const location = useLocation();
 
   if (loading) {
@@ -16,25 +15,25 @@ const ProtectedRoute = ({ children, requireAdmin = false }) => {
     );
   }
 
-  // Если пользователь не аутентифицирован, перенаправляем на страницу логина
+  // Проверка аутентификации
   if (!currentUser) {
     return <Navigate to="/login" state={{ from: location }} replace />;
   }
 
-  // Проверяем доступ к админке (admin = 1, manager = 2)
-  const hasStaffAccess = isAdmin() || isManager();
-  
-  // Если нет доступа к админке, перенаправляем на страницу запрета доступа
-  if (!hasStaffAccess) {
+  // Проверка доступа к админке (независимо от того, требуется ли админ)
+  // Только администраторы и менеджеры могут войти в админ-панель
+  if (!hasAdminAccess()) {
+    console.log('Access denied: User does not have admin or manager role');
     return <Navigate to="/access-denied" replace />;
   }
 
-  // Если нужны права администратора, но пользователь менеджер
+  // Дополнительная проверка для разделов, требующих прав администратора
   if (requireAdmin && !isAdmin()) {
+    console.log('Access denied: This section requires admin privileges');
     return <Navigate to="/access-denied" replace />;
   }
 
-  // Если всё в порядке, отображаем содержимое защищенного маршрута
+  // Если все проверки пройдены, отображаем содержимое
   return children;
 };
 

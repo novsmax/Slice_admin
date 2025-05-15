@@ -16,6 +16,7 @@ import Products from './pages/Products';
 import Categories from './pages/Categories';
 import Brands from './pages/Brands';
 import ProductImages from './pages/ProductImages';
+import Users from './pages/Users';
 import NotFound from './pages/NotFound';
 import AccessDenied from './pages/AccessDenied';
 
@@ -49,6 +50,7 @@ const App = () => {
                 <Route path="categories" element={<Categories />} />
                 <Route path="brands" element={<Brands />} />
                 <Route path="images" element={<ProductImages />} />
+                <Route path="users" element={<ProtectedRoute requireAdmin={true}><Users /></ProtectedRoute>} />
               </Route>
 
               {/* Перенаправления */}

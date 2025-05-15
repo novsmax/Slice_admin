@@ -42,8 +42,16 @@ export const AuthProvider = ({ children }) => {
 
   // Проверка роли администратора
   const isAdmin = () => {
-    // Используем текущего пользователя из состояния компонента вместо вызова getCurrentUser()
-    return currentUser && currentUser.role_id === 5; // admin = 1
+    // Используем текущего пользователя из состояния компонента
+    if (!currentUser) return false;
+    
+    // Проверка через объект role, если доступен
+    if (currentUser.role && currentUser.role.is_admin === true) {
+      return true;
+    }
+    
+    const adminRoleIds = [5]; 
+    return adminRoleIds.includes(currentUser.role_id);
   };
 
   // Проверка роли менеджера
